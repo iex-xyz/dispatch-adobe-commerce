@@ -1,0 +1,41 @@
+<?php
+
+/** @var \Dispatch\SalesChannel\Block\Adminhtml\System\Config\Fieldset\Extension $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<div class="dispatch-extension-section">
+    <div class="extension-title">
+        <h1>
+            <?= $escaper->escapeHtml(__('SalesChannel By Dispatch')) ?>
+        </h1>
+    </div>
+    <div class="user-guide">
+        <span class="message success">
+            <?= $escaper->escapeHtml(__('Need help with the settings? Please  consult the')) ?>
+            <a target="_blank" href="<?= $escaper->escapeUrl('#') ?>">
+                <?= $escaper->escapeHtml(__('user guide')) ?>
+            </a>
+            <?= $escaper->escapeHtml(__('to configure the extension properly.')) ?>
+        </span>
+    </div>
+</div>
+<style>
+    .dispatch-extension-section {
+        background: #f8f8f8;
+        border: 1px solid #e3e3e3;
+        padding: 2.5rem;
+    }
+
+    .dispatch-extension-section h1 {
+        font-weight: bold;
+        color: #eb5202;
+    }
+
+    .user-guide {
+        margin: 40px 20px 0px 0px;
+    }
+
+    .message.success {
+        background-color: #e9fbdb;
+    }
+</style>
