@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+	<route url="/V1/dispatch-salesChannel/initialize" method="POST">
+		<service class="Dispatch\SalesChannel\Api\ConfigurationManagementInterface" method="setConfiguration" />
+		<resources>
+			<resource ref="Dispatch_SalesChannel::config"/>
+		</resources>
+	</route>
+</routes>
