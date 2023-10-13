@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/system_file.xsd">
     <system>
         <!-- add new tab in system configuration section -->
-        <tab id="dispatch" translate="label" sortOrder="999999">
+        <tab id="dispatch" translate="label" sortOrder="100">
             <label>Dispatch</label>
         </tab>
         <!-- create section -->
@@ -31,6 +31,33 @@
                 </field>
                 <field id="account_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Dispatch Account Id</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sales_channel_test_connect" translate="button_label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <button_label>Test Connection</button_label>
+                    <frontend_model>Dispatch\SalesChannel\Block\Adminhtml\System\Config\TestConnection</frontend_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="catalog_id" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Catalog Id</label>
+                    <source_model>Dispatch\SalesChannel\Model\Config\Source\Categorylist</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="payment_method" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Preferred Payment Method</label>
+                    <source_model>Dispatch\SalesChannel\Model\Config\Source\PaymentMethods</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="payment_method_client_key" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment Method Publishable/Client Key</label>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>

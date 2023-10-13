@@ -4,6 +4,8 @@
         <sales_channel>
             <general>
                 <enabled>1</enabled>
+                <catalog_id>0</catalog_id>
+                <payment_method>0</payment_method>
             </general>
         </sales_channel>
     </default>

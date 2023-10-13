@@ -4,21 +4,25 @@ namespace Dispatch\SalesChannel\Block\Adminhtml\System\Config\Fieldset;
 
 use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
 use Magento\Backend\Block\Template;
-use Magento\Framework\Module\Dir\Reader as DirReader;
+use Magento\Backend\Block\Template\Context;
 
+/**
+ * Extension frontend model for extension info.
+ */
 class Extension extends Template implements RendererInterface
 {
-    protected $dirReader;
 
+    /**
+     * Extension constructor.
+     *
+     * @param Context $context
+     * @param array   $data
+     */
     public function __construct(
-        DirReader $dirReader,
-        Template\Context $context,
-        \Magento\Framework\HTTP\Client\Curl $curl,
+        Context $context,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->dirReader = $dirReader;
-        $this->_curl     = $curl;
     }
 
     /**
@@ -34,6 +38,11 @@ class Extension extends Template implements RendererInterface
         return $html;
     }
 
+    /**
+     * Path to the template file for the extension info.
+     *
+     * @return string
+     */
     public function getTemplate()
     {
         return 'Dispatch_SalesChannel::system/config/fieldset/extension.phtml';
