@@ -1,0 +1,31 @@
+<?php
+$controllerUrl = $block->getAjaxCheckUrl();
+?>
+<div>
+    <button id="sales_channel_test_connect_btn" class="action-default" type="button">
+        <span><?= __('Test Connection') ?></span>
+    </button>
+</div>
+
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $(document).ready(function() {
+            $('#sales_channel_test_connect_btn').click(function() {
+                $.ajax({
+                    url: '<?= $controllerUrl ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    showLoader: true,
+                    data: {
+                        form_key: FORM_KEY
+                    },
+                    success: function(response) {
+                        if (response.message) {
+                            alert(response.message);
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
