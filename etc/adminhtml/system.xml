@@ -62,6 +62,13 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="sales_channel_sync_setting" translate="button_label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <button_label>Sync Settings</button_label>
+                    <frontend_model>Dispatch\SalesChannel\Block\Adminhtml\System\Config\SyncSettings</frontend_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>
