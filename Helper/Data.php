@@ -56,7 +56,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $apiUrl      = self::API_URL;
 
         $params = [
-            "accessToken" => $accessToken,
+            "dispatchApiSecret" => $accessToken,
             "dispatchAccountID" => $accountId,
             "settingsUrl" => "http://something.adobe.com/Dispatch-Settings"
         ];
