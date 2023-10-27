@@ -20,9 +20,7 @@ $controllerUrl = $block->getAjaxCheckUrl();
                         form_key: FORM_KEY
                     },
                     success: function(response) {
-                        if (response.message) {
-                            alert(response.message);
-                        }
+                        window.location.reload();
                     }
                 });
             });
