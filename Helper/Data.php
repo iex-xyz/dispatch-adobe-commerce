@@ -4,6 +4,7 @@ namespace Dispatch\SalesChannel\Helper;
 
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\HTTP\Client\Curl;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -17,16 +18,24 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $_curl;
 
     /**
+     * @var StoreManagerInterface $storeManager
+     */
+    protected $storeManager;
+
+    /**
      * Data constructor.
      *
      * @param Context $context
      * @param Curl $curl
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Context $context,
-        Curl $curl
+        Curl $curl,
+        StoreManagerInterface $storeManager
     ) {
         $this->_curl = $curl;
+        $this->storeManager = $storeManager;
         parent::__construct($context);
     }
 
@@ -51,16 +60,16 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function testConnectionApi()
     {
-        $accessToken = $this->getConfig(self::XML_PATH_API_KEY);
-        $accountId   = $this->getConfig(self::XML_PATH_ACCOUNT_ID);
-        $apiUrl      = self::API_URL;
+        $dispatchApiSecret = $this->getConfig(self::XML_PATH_API_KEY);
+        $accountId         = $this->getConfig(self::XML_PATH_ACCOUNT_ID);
+        $apiUrl            = self::API_URL;
+        $storeUrl          = $this->storeManager->getStore()->getBaseUrl();
 
         $params = [
-            "dispatchApiSecret" => $accessToken,
+            "dispatchApiSecret" => $dispatchApiSecret,
             "dispatchAccountID" => $accountId,
-            "settingsUrl" => "http://something.adobe.com/Dispatch-Settings"
+            "settingsUrl"       => $storeUrl . "rest/V1/dispatch-salesChannel/sync-settings"
         ];
-
         $this->_curl->setOption(CURLOPT_CUSTOMREQUEST, 'POST');
         $this->_curl->addHeader('Content-Type', 'application/json');
         $this->_curl->post($apiUrl, json_encode($params));

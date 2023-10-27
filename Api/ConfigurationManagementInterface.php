@@ -15,4 +15,11 @@ interface ConfigurationManagementInterface
      * @return array
      */
     public function setConfiguration(): array;
+
+    /**
+     * Get configuration for the SalesChannel.
+     *
+     * @return array
+     */
+    public function getConfiguration(): array;
 }

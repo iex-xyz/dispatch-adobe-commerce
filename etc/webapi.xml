@@ -6,4 +6,10 @@
 			<resource ref="Dispatch_SalesChannel::config"/>
 		</resources>
 	</route>
+	<route url="/V1/dispatch-salesChannel/sync-settings" method="POST">
+		<service class="Dispatch\SalesChannel\Api\ConfigurationManagementInterface" method="getConfiguration" />
+		<resources>
+			<resource ref="Dispatch_SalesChannel::config"/>
+		</resources>
+	</route>
 </routes>

@@ -18,6 +18,9 @@ class ConfigurationManagement implements ConfigurationManagementInterface
     private const XML_PATH_ENABLED = "sales_channel/general/enabled";
     private const XML_PATH_API_KEY = "sales_channel/general/api_key";
     private const XML_PATH_ACCOUNT_ID = "sales_channel/general/account_id";
+    private const XML_PATH_CATALOG_ID = "sales_channel/general/catalog_id";
+    private const XML_PATH_PAYMENT_METHOD = "sales_channel/general/payment_method";
+    private const XML_PATH_PAYMENT_METHOD_CLIENT_KEY = "sales_channel/general/payment_method_client_key";
 
     /**
      * @var WriterInterface
@@ -40,23 +43,31 @@ class ConfigurationManagement implements ConfigurationManagementInterface
     protected $request;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
      * ConfigurationManagement constructor.
      *
      * @param WriterInterface $configWriter
      * @param TypeListInterface $cacheTypeList
      * @param Pool $cacheFrontendPool
      * @param Request $request
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         WriterInterface $configWriter,
         TypeListInterface $cacheTypeList,
         Pool $cacheFrontendPool,
-        Request $request
+        Request $request,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->configWriter = $configWriter;
         $this->cacheTypeList = $cacheTypeList;
         $this->cacheFrontendPool = $cacheFrontendPool;
         $this->request = $request;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -156,5 +167,81 @@ class ConfigurationManagement implements ConfigurationManagementInterface
         foreach ($this->cacheFrontendPool as $cacheFrontend) {
             $cacheFrontend->getBackend()->clean();
         }
+    }
+
+    /**
+     * Get configuration data.
+     *
+     * @param string $path
+     * @return mixed
+     */
+    private function getConfigurationData(string $path): mixed
+    {
+        return $this->scopeConfig->getValue(
+            $path,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+        );
+    }
+
+    /**
+     * Get configuration values based on request account id.
+     *
+     * @return array
+     */
+    public function getConfiguration(): array
+    {
+        $body = $this->request->getBodyParams();
+        $configData = $body['data'];
+
+        if (isset($configData['account_id'])) {
+            try {
+                $requestAccountId             = $configData['account_id'];
+                $enabled                      = $this->getConfigurationData(self::XML_PATH_ENABLED);
+                $apiKey                       = $this->getConfigurationData(self::XML_PATH_API_KEY);
+                $configAccountId              = $this->getConfigurationData(self::XML_PATH_ACCOUNT_ID);
+                $configCatalogId              = $this->getConfigurationData(self::XML_PATH_CATALOG_ID);
+                $configPaymentMethod          = $this->getConfigurationData(self::XML_PATH_PAYMENT_METHOD);
+                $configPaymentMethodClientKey = $this->getConfigurationData(self::XML_PATH_PAYMENT_METHOD_CLIENT_KEY);
+
+                if ($requestAccountId == $configAccountId) {
+                    $response = [
+                        [
+                            "code" => 'success',
+                            "message" => [
+                                'enabled'                   => $enabled,
+                                'api_key'                   => $apiKey,
+                                'account_id'                => $configAccountId,
+                                'catalog_id'                => $configCatalogId,
+                                'payment_method'            => $configPaymentMethod,
+                                'payment_method_client_key' => $configPaymentMethodClientKey
+                            ]
+                        ],
+                    ];
+                } else {
+                    $response = [
+                        [
+                            "code" => 'error',
+                            "message" => 'Provided accountId is invalid',
+                        ],
+                    ];
+                }
+            } catch (\Exception $e) {
+                $response = [
+                    [
+                        "code" => 'error',
+                        "message" => $e->getMessage(),
+                    ],
+                ];
+            }
+        } else {
+            $response = [
+                [
+                    "code" => 'error',
+                    "message" => 'account_id required parameters are missing.',
+                ],
+            ];
+        }
+
+        return $response;
     }
 }
