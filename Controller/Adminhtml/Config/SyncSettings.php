@@ -5,6 +5,8 @@ namespace Dispatch\SalesChannel\Controller\Adminhtml\Config;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Dispatch\SalesChannel\Helper\Data as DataHelper;
+use Magento\Framework\Message\ManagerInterface;
 
 /**
  * SyncSettings controller for Sync Settings action.
@@ -17,17 +19,33 @@ class SyncSettings extends Action
     protected $resultJsonFactory;
 
     /**
+     * @var DataHelper
+     */
+    protected $dataHelper;
+
+    /**
+     * @var ManagerInterface
+     */
+    protected $messageManager;
+
+    /**
      * SyncSettings constructor.
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
+     * @param DataHelper $dataHelper
+     * @param ManagerInterface $messageManager
      */
     public function __construct(
         Context $context,
-        JsonFactory $resultJsonFactory
+        JsonFactory $resultJsonFactory,
+        DataHelper $dataHelper,
+        ManagerInterface $messageManager
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
+        $this->dataHelper = $dataHelper;
+        $this->messageManager = $messageManager;
     }
 
     /**
@@ -37,10 +55,28 @@ class SyncSettings extends Action
      */
     public function execute()
     {
-        $result = ['message' => 'Sync Settings.'];
+        $result  = $this->resultJsonFactory->create();
+        $storeId = $this->getRequest()->getParam('store');
 
-        $resultJson = $this->resultJsonFactory->create();
-        return $resultJson->setData($result);
+        try {
+            $response = $this->dataHelper->syncSettingsApi($storeId);
+            $data = json_decode($response, true);
+            if (isset($data['statusCode']) && $data['statusCode'] === 200) {
+                $response = [
+                    'success' => true,
+                    'message' => __('Sync Settings successfully.'),
+                ];
+                $this->messageManager->addSuccess(__("Sync Settings successfully."));
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => __($data['message']),
+                ];
+                $this->messageManager->addError(__($data['message']));
+            }
+        } catch (\Exception $e) {
+        }
+        return $result->setData($response);
     }
 
     /**

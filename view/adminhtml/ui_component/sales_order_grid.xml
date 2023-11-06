@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_columns">
+        <column name="order_via_dispatch" class="Dispatch\SalesChannel\Ui\Component\Listing\Column\DispatchOrder">
+            <settings>
+                <filter>select</filter>
+                <options class="Dispatch\SalesChannel\Ui\Component\Listing\Column\DispatchOrder\Options"/>
+                <visible>true</visible>
+                <dataType>select</dataType>
+                <label translate="true">Order Via Dispatch</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

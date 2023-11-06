@@ -55,16 +55,18 @@ class TestConnection extends Action
      */
     public function execute()
     {
-        $result = $this->resultJsonFactory->create();
+        $result  = $this->resultJsonFactory->create();
+        $storeId = $this->getRequest()->getParam('store');
+
         try {
-            $response = $this->dataHelper->testConnectionApi();
+            $response = $this->dataHelper->testConnectionApi($storeId);
             $data = json_decode($response, true);
-            if (isset($data['success']) && $data['success'] === true) {
+            if (isset($data['statusCode']) && $data['statusCode'] === 200) {
                 $response = [
                     'success' => true,
-                    'message' => __('Connection test succeeded'),
+                    'message' => __('Connection test successfully'),
                 ];
-                $this->messageManager->addSuccess(__("Connection test succeeded"));
+                $this->messageManager->addSuccess(__("Connection test successfully"));
             } else {
                 $response = [
                     'success' => false,
