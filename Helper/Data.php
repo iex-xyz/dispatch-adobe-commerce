@@ -8,9 +8,10 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    private const XML_PATH_API_KEY    = "sales_channel/general/api_key";
-    private const XML_PATH_ACCOUNT_ID = "sales_channel/general/account_id";
-    private const API_URL             = "https://oms-gateway.dispatch.co/api/adobe/commerce/test-connection";
+    private const XML_PATH_API_KEY        = "sales_channel/general/api_key";
+    private const XML_PATH_ACCOUNT_ID     = "sales_channel/general/account_id";
+    private const TEST_CONNECTION_API_URL = "https://oms-gateway.dispatch.co/api/adobe/commerce/test-connection";
+    private const SYNC_SETTINGS_API_URL   = "https://oms-gateway.dispatch.co/api/adobe/commerce/sync";
 
     /**
      * @var Curl $curl
@@ -50,6 +51,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->scopeConfig->getValue(
             $path,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->storeManager->getStore()->getStoreId()
         );
     }
 
@@ -58,17 +60,45 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return string Response from the API
      */
-    public function testConnectionApi()
+    public function testConnectionApi($storeId)
     {
         $dispatchApiSecret = $this->getConfig(self::XML_PATH_API_KEY);
         $accountId         = $this->getConfig(self::XML_PATH_ACCOUNT_ID);
-        $apiUrl            = self::API_URL;
+        $apiUrl            = self::TEST_CONNECTION_API_URL;
         $storeUrl          = $this->storeManager->getStore()->getBaseUrl();
+        $settingsUrl       = $storeUrl . "rest/" . $this->storeManager->getStore($storeId)->getCode() . "/V1/dispatch-salesChannel/sync-settings";
 
         $params = [
             "dispatchApiSecret" => $dispatchApiSecret,
             "dispatchAccountID" => $accountId,
-            "settingsUrl"       => $storeUrl . "rest/V1/dispatch-salesChannel/sync-settings"
+            "settingsUrl"       => $settingsUrl
+        ];
+        $this->_curl->setOption(CURLOPT_CUSTOMREQUEST, 'POST');
+        $this->_curl->addHeader('Content-Type', 'application/json');
+        $this->_curl->post($apiUrl, json_encode($params));
+
+        $response = $this->_curl->getBody();
+
+        return $response;
+    }
+
+    /**
+     * Sync settings.
+     *
+     * @return string Response from the API
+     */
+    public function syncSettingsApi($storeId)
+    {
+        $dispatchApiSecret = $this->getConfig(self::XML_PATH_API_KEY);
+        $accountId         = $this->getConfig(self::XML_PATH_ACCOUNT_ID);
+        $apiUrl            = self::SYNC_SETTINGS_API_URL;
+        $storeUrl          = $this->storeManager->getStore()->getBaseUrl();
+        $settingsUrl       = $storeUrl . "rest/" . $this->storeManager->getStore($storeId)->getCode() . "/V1/dispatch-salesChannel/sync-settings";
+
+        $params = [
+            "dispatchApiSecret" => $dispatchApiSecret,
+            "dispatchAccountID" => $accountId,
+            "settingsUrl"       => $settingsUrl
         ];
         $this->_curl->setOption(CURLOPT_CUSTOMREQUEST, 'POST');
         $this->_curl->addHeader('Content-Type', 'application/json');
