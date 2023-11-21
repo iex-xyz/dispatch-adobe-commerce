@@ -19,14 +19,17 @@ Your implementation will allow your business to start selling in new channels wi
    ```
 2. Enable module
    ```
-   bin/magento setup:upgrade
+   php bin/magento setup:upgrade
    ```
+3. Compile the module code and other existing module
+   ```
+   php bin/magento setup:di:compile;
+   ```
+4. Static content deployment
+   ```
+   php bin/magento s:s:d -f;
+   ```   
    
-## Upgrading
-
-```
-bin/magento setup:upgrade
-```
 
 
 ## Magento backend configuration
