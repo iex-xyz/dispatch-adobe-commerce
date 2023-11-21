@@ -2,7 +2,7 @@
   "name": "dispatch/sales-channel",
   "description": "Dispatch SalesChannel",
   "require": {
-    "php": "~5.5.0|~5.6.0|~7.0.0|8.1"
+    "php": ">=7.0"
   },
   "type": "magento2-module",
   "license": [
