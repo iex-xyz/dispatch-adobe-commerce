@@ -1,4 +1,14 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Dispatch\SalesChannel\Api\ConfigurationManagementInterface" type="Dispatch\SalesChannel\Model\ConfigurationManagement" />
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="order_via_dispatch" xsi:type="string">sales_order.order_via_dispatch</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Quote\Model\GuestCart\GuestCartManagement">
+        <plugin name="dispatch_salesChannel_guest_cart_create_empty_cart" type="Dispatch\SalesChannel\Plugin\GuestCartManagement" sortOrder="10" disabled="false"/>
+    </type>
 </config>

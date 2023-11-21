@@ -8,6 +8,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Cache\Frontend\Pool;
 use Magento\Framework\Webapi\Rest\Request;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * ConfigurationManagement model for initialize api.
@@ -15,12 +16,13 @@ use Magento\Framework\Webapi\Rest\Request;
 class ConfigurationManagement implements ConfigurationManagementInterface
 {
     // Constants for XML path configurations
-    private const XML_PATH_ENABLED = "sales_channel/general/enabled";
-    private const XML_PATH_API_KEY = "sales_channel/general/api_key";
-    private const XML_PATH_ACCOUNT_ID = "sales_channel/general/account_id";
-    private const XML_PATH_CATALOG_ID = "sales_channel/general/catalog_id";
-    private const XML_PATH_PAYMENT_METHOD = "sales_channel/general/payment_method";
+    private const XML_PATH_ENABLED                   = "sales_channel/general/enabled";
+    private const XML_PATH_API_KEY                   = "sales_channel/general/api_key";
+    private const XML_PATH_ACCOUNT_ID                = "sales_channel/general/account_id";
+    private const XML_PATH_CATALOG_ID                = "sales_channel/general/catalog_id";
+    private const XML_PATH_PAYMENT_METHOD            = "sales_channel/general/payment_method";
     private const XML_PATH_PAYMENT_METHOD_CLIENT_KEY = "sales_channel/general/payment_method_client_key";
+    private const XML_PATH_STORE_LOCALE              = "general/locale/code";
 
     /**
      * @var WriterInterface
@@ -48,6 +50,11 @@ class ConfigurationManagement implements ConfigurationManagementInterface
     protected $scopeConfig;
 
     /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * ConfigurationManagement constructor.
      *
      * @param WriterInterface $configWriter
@@ -55,19 +62,22 @@ class ConfigurationManagement implements ConfigurationManagementInterface
      * @param Pool $cacheFrontendPool
      * @param Request $request
      * @param ScopeConfigInterface $scopeConfig
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         WriterInterface $configWriter,
         TypeListInterface $cacheTypeList,
         Pool $cacheFrontendPool,
         Request $request,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        StoreManagerInterface $storeManager
     ) {
         $this->configWriter = $configWriter;
         $this->cacheTypeList = $cacheTypeList;
         $this->cacheFrontendPool = $cacheFrontendPool;
         $this->request = $request;
         $this->scopeConfig = $scopeConfig;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -180,6 +190,7 @@ class ConfigurationManagement implements ConfigurationManagementInterface
         return $this->scopeConfig->getValue(
             $path,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->storeManager->getStore()->getStoreId()
         );
     }
 
@@ -202,6 +213,10 @@ class ConfigurationManagement implements ConfigurationManagementInterface
                 $configCatalogId              = $this->getConfigurationData(self::XML_PATH_CATALOG_ID);
                 $configPaymentMethod          = $this->getConfigurationData(self::XML_PATH_PAYMENT_METHOD);
                 $configPaymentMethodClientKey = $this->getConfigurationData(self::XML_PATH_PAYMENT_METHOD_CLIENT_KEY);
+                $storeId                      = $this->storeManager->getStore()->getId();
+                $storeCode                    = $this->storeManager->getStore()->getCode();
+                $storeName                    = $this->storeManager->getStore()->getName();
+                $storeLanguage                = $this->getConfigurationData(self::XML_PATH_STORE_LOCALE);
 
                 if ($requestAccountId == $configAccountId) {
                     $response = [
@@ -213,7 +228,11 @@ class ConfigurationManagement implements ConfigurationManagementInterface
                                 'account_id'                => $configAccountId,
                                 'catalog_id'                => $configCatalogId,
                                 'payment_method'            => $configPaymentMethod,
-                                'payment_method_client_key' => $configPaymentMethodClientKey
+                                'payment_method_client_key' => $configPaymentMethodClientKey,
+                                'store_id'                  => $storeId,
+                                'store_code'                => $storeCode,
+                                'store_name'                => $storeName,
+                                'store_language_code'       => $storeLanguage
                             ]
                         ],
                     ];
