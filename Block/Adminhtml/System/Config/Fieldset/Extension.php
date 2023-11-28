@@ -11,21 +11,9 @@ use Magento\Backend\Block\Template\Context;
  */
 class Extension extends Template implements RendererInterface
 {
-
     /**
-     * Extension constructor.
+     * Render element.
      *
-     * @param Context $context
-     * @param array   $data
-     */
-    public function __construct(
-        Context $context,
-        array $data = []
-    ) {
-        parent::__construct($context, $data);
-    }
-
-    /**
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return mixed
      */

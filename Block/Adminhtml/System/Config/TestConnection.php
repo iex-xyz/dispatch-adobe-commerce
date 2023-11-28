@@ -27,8 +27,9 @@ class TestConnection extends Field
     /**
      * TestConnection constructor.
      *
-     * @param Context $context
-     * @param array   $data
+     * @param Context      $context
+     * @param UrlInterface $urlInterface
+     * @param array        $data
      */
     public function __construct(
         Context $context,
@@ -51,6 +52,12 @@ class TestConnection extends Field
         return parent::render($element);
     }
 
+    /**
+     * Get HTML for the element.
+     *
+     * @param AbstractElement $element
+     * @return string
+     */
     protected function _getElementHtml(AbstractElement $element)
     {
         return $this->_toHtml();
