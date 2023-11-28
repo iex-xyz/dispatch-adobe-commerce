@@ -1,18 +1,15 @@
-<?php
-$controllerUrl = $block->getAjaxCheckUrl();
-?>
 <div>
     <button id="sales_channel_sync_btn" class="action-default" type="button">
-        <span><?= __('Sync Settings') ?></span>
+        <span><?= $block->escapeHtmlAttr('Sync Settings') ?></span>
     </button>
 </div>
 
-<script type="text/javascript">
+<script>
     require(['jquery'], function($) {
         $(document).ready(function() {
             $('#sales_channel_sync_btn').click(function() {
                 $.ajax({
-                    url: '<?= $controllerUrl ?>',
+                    url: '<?= $block->escapeUrl($block->getAjaxCheckUrl()) ?>',
                     type: 'POST',
                     dataType: 'json',
                     showLoader: true,
