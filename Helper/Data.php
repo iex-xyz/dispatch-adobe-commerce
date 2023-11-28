@@ -58,6 +58,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Test the API connection.
      *
+     * @param string $storeId
      * @return string Response from the API
      */
     public function testConnectionApi($storeId)
@@ -66,7 +67,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $accountId         = $this->getConfig(self::XML_PATH_ACCOUNT_ID);
         $apiUrl            = self::TEST_CONNECTION_API_URL;
         $storeUrl          = $this->storeManager->getStore()->getBaseUrl();
-        $settingsUrl       = $storeUrl . "rest/" . $this->storeManager->getStore($storeId)->getCode() . "/V1/dispatch-salesChannel/sync-settings";
+        $storeCode         = $this->storeManager->getStore($storeId)->getCode();
+        $settingsUrl       = $storeUrl . "rest/" . $storeCode . "/V1/dispatch-salesChannel/sync-settings";
 
         $params = [
             "dispatchApiSecret" => $dispatchApiSecret,
@@ -85,6 +87,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Sync settings.
      *
+     * @param string $storeId
      * @return string Response from the API
      */
     public function syncSettingsApi($storeId)
@@ -93,7 +96,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $accountId         = $this->getConfig(self::XML_PATH_ACCOUNT_ID);
         $apiUrl            = self::SYNC_SETTINGS_API_URL;
         $storeUrl          = $this->storeManager->getStore()->getBaseUrl();
-        $settingsUrl       = $storeUrl . "rest/" . $this->storeManager->getStore($storeId)->getCode() . "/V1/dispatch-salesChannel/sync-settings";
+        $storeCode         = $this->storeManager->getStore($storeId)->getCode();
+        $settingsUrl       = $storeUrl . "rest/" . $storeCode . "/V1/dispatch-salesChannel/sync-settings";
 
         $params = [
             "dispatchApiSecret" => $dispatchApiSecret,
