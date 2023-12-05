@@ -69,7 +69,7 @@ class TestConnection extends Action
             $storeId  = $this->request->getParam('store');
             $response = $this->dataHelper->testConnectionApi($storeId);
             $data = json_decode($response, true);
-            if (isset($data['statusCode']) && $data['statusCode'] === 200) {
+            if (isset($data['success']) && $data['success'] === true) {
                 $response = [
                     'success' => true,
                     'message' => __('Connection test successfully'),
