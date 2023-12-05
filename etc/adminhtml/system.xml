@@ -43,7 +43,7 @@
                     </depends>
                 </field>
                 <field id="catalog_id" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Catalog Id</label>
+                    <label>Category</label>
                     <source_model>Dispatch\SalesChannel\Model\Config\Source\Categorylist</source_model>
                     <depends>
                         <field id="enabled">1</field>
@@ -68,6 +68,7 @@
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
+                    <comment>Sync your settings with Dispatch.</comment>
                 </field>
             </group>
         </section>
