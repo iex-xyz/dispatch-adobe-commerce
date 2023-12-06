@@ -64,9 +64,9 @@ class TestConnection extends Action
             if (isset($data['success']) && $data['success'] === true) {
                 $response = [
                     'success' => true,
-                    'message' => __('Connection test successfully'),
+                    'message' => __('Connection test successful.'),
                 ];
-                $this->messageManager->addSuccess(__("Connection test successfully"));
+                $this->messageManager->addSuccess(__("Connection test successful."));
             } else {
                 $response = [
                     'success' => false,

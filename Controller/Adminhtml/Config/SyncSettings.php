@@ -64,9 +64,9 @@ class SyncSettings extends Action
             if (isset($data['statusCode']) && $data['statusCode'] === 200) {
                 $response = [
                     'success' => true,
-                    'message' => __('Sync Settings successfully.'),
+                    'message' => __('Sync settings successful.'),
                 ];
-                $this->messageManager->addSuccess(__("Sync Settings successfully."));
+                $this->messageManager->addSuccess(__("Sync settings successful."));
             } else {
                 $response = [
                     'success' => false,
