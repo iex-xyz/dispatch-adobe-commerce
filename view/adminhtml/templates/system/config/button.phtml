@@ -1,18 +1,15 @@
-<?php
-$controllerUrl = $block->getAjaxCheckUrl();
-?>
 <div>
     <button id="sales_channel_test_connect_btn" class="action-default" type="button">
-        <span><?= __('Test Connection') ?></span>
+        <span><?= $block->escapeHtmlAttr("Test Connection") ?></span>
     </button>
 </div>
 
-<script type="text/javascript">
+<script>
     require(['jquery'], function($) {
         $(document).ready(function() {
             $('#sales_channel_test_connect_btn').click(function() {
                 $.ajax({
-                    url: '<?= $controllerUrl ?>',
+                    url: '<?= $block->escapeUrl($block->getAjaxCheckUrl()) ?>',
                     type: 'POST',
                     dataType: 'json',
                     showLoader: true,
