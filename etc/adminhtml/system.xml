@@ -68,7 +68,7 @@
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
-                    <comment>Sync your settings with Dispatch.</comment>
+                    <comment>Sync your settings and products with Dispatch.</comment>
                 </field>
             </group>
         </section>
