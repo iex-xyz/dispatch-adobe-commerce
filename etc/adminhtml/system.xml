@@ -50,11 +50,12 @@
                     </depends>
                 </field>
                 <field id="payment_method" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Preferred Payment Method</label>
+                    <label>Payment Service Provider</label>
                     <source_model>Dispatch\SalesChannel\Model\Config\Source\PaymentMethods</source_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
+                    <comment>Currently, We are only supporting Adyen and Stripe Payment Service Providers.</comment>
                 </field>
                 <field id="payment_method_client_key" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Payment Method Publishable/Client Key</label>
