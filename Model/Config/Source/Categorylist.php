@@ -85,7 +85,9 @@ class CategoryList implements ArrayInterface
 
         $categoryList = [];
         foreach ($categories as $category) {
-            $categoryList[$category->getEntityId()] = __($this->getParentName($category->getPath()) . $category->getName());
+            $categoryList[$category->getEntityId()] = __(
+                $this->getParentName($category->getPath()) . $category->getName()
+            );
         }
 
         return $categoryList;
