@@ -37,10 +37,12 @@ class PaymentMethods implements ArrayInterface
         $enabledMethods = [];
 
         foreach ($methods as $method) {
-            $enabledMethods[] = [
-                'value' => $method->getCode(),
-                'label' => $method->getTitle()
-            ];
+            if ($method->getCode() == 'adyen_cc' || $method->getCode() == 'stripe_payments_checkout') {
+                $enabledMethods[] = [
+                    'value' => $method->getCode(),
+                    'label' => $method->getTitle()
+                ];
+            }
         }
         array_unshift($enabledMethods, ['value' => 0, 'label' => '-- Please Select --']);
 
