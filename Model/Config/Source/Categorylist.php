@@ -5,6 +5,7 @@ namespace Dispatch\SalesChannel\Model\Config\Source;
 use Magento\Framework\Option\ArrayInterface;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Categorylist source model for category configuration options.
@@ -22,17 +23,25 @@ class CategoryList implements ArrayInterface
     protected $categoryCollectionFactory;
 
     /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * CategoryList constructor.
      *
      * @param CategoryFactory $categoryFactory
      * @param CollectionFactory $categoryCollectionFactory
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         CategoryFactory $categoryFactory,
-        CollectionFactory $categoryCollectionFactory
+        CollectionFactory $categoryCollectionFactory,
+        StoreManagerInterface $storeManager
     ) {
         $this->categoryFactory = $categoryFactory;
         $this->categoryCollectionFactory = $categoryCollectionFactory;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -58,9 +67,10 @@ class CategoryList implements ArrayInterface
     {
         $categoryData = $this->convertToArray();
         $options = [];
+        $rootCategoryId = $this->getRootCategoryId();
 
         $options[] = [
-            'value' => 0,
+            'value' => $rootCategoryId,
             'label' => __('All Categories')
         ];
 
@@ -85,9 +95,11 @@ class CategoryList implements ArrayInterface
 
         $categoryList = [];
         foreach ($categories as $category) {
-            $categoryList[$category->getEntityId()] = __(
-                $this->getParentName($category->getPath()) . $category->getName()
-            );
+            if ($category->getEntityId() != $this->getRootCategoryId()) {
+                $categoryList[$category->getEntityId()] = __(
+                    $this->getParentName($category->getPath()) . $category->getName()
+                );
+            }
         }
 
         return $categoryList;
@@ -118,5 +130,19 @@ class CategoryList implements ArrayInterface
         }
 
         return $parentName;
+    }
+
+    /**
+     * Get store root category id.
+     *
+     * @return int
+     */
+    protected function getRootCategoryId()
+    {
+        $storeId = $this->storeManager->getStore()->getId();
+        $store = $this->storeManager->getStore($storeId);
+        $rootCategoryId = $store->getRootCategoryId();
+
+        return $rootCategoryId;
     }
 }
