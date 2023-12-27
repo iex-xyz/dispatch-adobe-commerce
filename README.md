@@ -31,7 +31,25 @@ Your implementation will allow your business to start selling in new channels wi
 ## AdobeCommerce Integration Keys
 Dispatch needs an AdobeCommerce Integration configured so it has access to create orders and sync products on your behalf. Dispatch never accesses any data unrelated to the Products and Orders it serves via your configured Dispatch Sales Channels.
 
-TODO: Add a screenshot and docs explaining which permissions we need.
+The integration needs access to the following resources to read product data and create orders on your behalf:
+
+- Sales
+- - Operations 
+- - Billing Agreements
+- - Transactions
+- - Shopping Cart Management
+- - Catalog (Readonly)
+- - Categories (Readonly)
+- - Carts
+- Stores
+- - Settings (Sitemap, developer, analytics etc. not needed)
+- - Inventory (Readonly)
+- - Stocks (Sales Stock only)
+- - Taxes
+- - Currency
+- - Attributes
+
+If you have any concerns or questions about these permissions, contact your Dispatch representative. 
 
 Once you have configured this key, you need to share it with your account rep or email support@dispatch.co to request secure transmission of this key.
    
