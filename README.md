@@ -1,10 +1,14 @@
 # Dispatch Adobe Commerce Plugin
+[Dispatch - Marketplace Listing](https://commercemarketplace.adobe.com/dispatch-sales-channel.html)
 
 Dispatch enables merchants using Adobe Commerce (Magento 2) to engage and sell products to customers directly through various sales and marketing channels.
 
 Your implementation will allow your business to start selling in new channels with Dispatch, while having orders and payments processed through existing PSP, just like your business’s ecommerce website.
  
 ## Installation
+Add the plugin:
+
+[Dispatch - Marketplace Listing](https://commercemarketplace.adobe.com/dispatch-sales-channel.html)
   
 1. Install via composer
    Dispatch will provide an Adobe Commerce Plugin/ Setup will look like this:
